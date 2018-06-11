@@ -1,0 +1,143 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "API for sending emails"
+	},
+	"host": "localhost:3000",
+	"basePath": "/api/v1",
+	"tags": [
+		{
+			"name": "Emails",
+			"description": "API Email"
+		}
+	],
+	"schemes": [
+		"http"
+	],
+	"consumes": [
+		"application/json"
+	],
+	"produces": [
+		"application/json"
+	],
+	"paths": {
+		"/emails": {
+			"x-swagger-router-controller": "emails.server.controller",
+			"post": {
+				"tags": [
+					"Emails"
+				],
+				"summary": "Send email",
+				"operationId": "sendEmail",
+				"parameters": [
+					{
+						"in": "body",
+						"name": "user",
+						"required": true,
+						"description": "Dados de configuração do e-mail",
+						"schema": {
+							"$ref": "#/definitions/sendEmail"
+						}
+					},
+					{
+						"name": "smtp_host",
+						"in": "header",
+						"description": "Ex: smtp.doamin.com",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "smtp_port",
+						"in": "header",
+						"description": "Ex: 999",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "smtp_require_tls",
+						"in": "header",
+						"description": "Ex: true or false",
+						"required": true,
+						"type": "boolean"
+					},
+					{
+						"name": "smtp_reject_unauthorized",
+						"in": "header",
+						"description": "Ex: true or false",
+						"required": true,
+						"type": "boolean"
+					},
+					{
+						"name": "smtp_auth_user",
+						"in": "header",
+						"description": "Ex: name@domain.com",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "smtp_auth_pass",
+						"in": "header",
+						"description": "Ex: 123456",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Email was forwarded",
+						"schema": {
+							"$ref": "#/definitions/responseSendEmail"
+						}
+					},
+					"400": {
+						"description": "Invalid Order"
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"sendEmail": {
+			"type": "object",
+			"required": [
+				"from",
+				"to",
+				"subject",
+				"text",
+				"html"
+			],
+			"properties": {
+				"from": {
+					"type": "string"
+				},
+				"to": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"subject": {
+					"type": "string"
+				},
+				"text": {
+					"type": "string"
+				},
+				"html": {
+					"type": "string"
+				}
+			}
+		},
+		"responseSendEmail": {
+			"type": "object",
+			"properties": {
+				"message": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

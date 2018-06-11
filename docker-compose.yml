@@ -1,0 +1,15 @@
+version: '3'
+services:
+  database:
+    image: mongo:3.7
+    ports:
+        - 27017:27017
+  backend:
+    image: node:8.11.1
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./backend:/backend
+    ports:
+      - 3000:3000
+    command: bash -c "cd /backend && npm i && node server"
